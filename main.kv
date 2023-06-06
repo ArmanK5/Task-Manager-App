@@ -1,4 +1,4 @@
-MDFloatLayout:
+MDFloatLayout:  # main page
     MDLabel:
         id: task_label
         halign: "center"
@@ -13,6 +13,54 @@ MDFloatLayout:
 
     MDFloatingActionButton:
         icon: "plus-thick"
-        #on_release:
+        on_release: app.create_task_dialog()
         elevation_normal: 112
         pos_hint: {"x": 0.45, "y": 0.04}
+
+<DialogContent>:  # adding tasks section
+    orientation: "vertical"
+    spacing: "10dp"
+    size_hint: 1, None
+    height: "130dp"
+
+    GridLayout:
+        rows: 1
+        MDTextField:
+            id: task_text
+            hint_text: "Add Task"
+            pos_hint: {"center_y": 0.4}
+            max_text_length: 50
+            on_text_validate: (app.add_task(task_text, date_text.text), app.delete_dialog())
+
+        MDIconButton:
+            icon: "calendar"
+            on_release: root.show_date_picker()
+            padding: "10dp"
+    MDLabel:
+        spacing: "10dp"
+        id: date_text
+
+    BoxLayout:
+        orientation: "horizontal"
+
+        MDRaisedButton:
+            text: "SAVE"
+            on_release: (app.add_task(task_text, date_text.text) , app.delete_dialog())
+
+        MDFlatButton:
+            text: "CANCEL"
+            on_release: app.delete_dialog()
+
+<ListItem>:  # item object which includes the checkbox, the name and the delete button
+    id: the_list_item
+    markup: True
+
+    LeftCheckBox:
+        id: check
+        on_release: root.mark(check, the_list_item)
+
+    IconRightWidget:
+        icon: "trash-can-outline"
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+        on_release: root.delete_item(the_list_item)
