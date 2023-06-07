@@ -1,2 +1,2 @@
 # Task Manager App
- Python task manager using kivy framework
+ Python task manager with a database using kivy framework
